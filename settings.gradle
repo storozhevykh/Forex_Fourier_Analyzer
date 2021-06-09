@@ -1,0 +1,2 @@
+rootProject.name = "Forex Fourier Analyzer"
+include ':app'
