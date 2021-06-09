@@ -10,7 +10,16 @@
     <TextView
         android:id="@+id/text_welcome"
         style="@style/welcome_style"
-        android:layout_centerHorizontal="true"
+        android:textColor="@color/get_started"
         android:text="@string/text_welcome" />
+
+    <TextView
+        android:id="@+id/text_start"
+        style="@style/get_started_style"
+        android:background="@drawable/get_started_border"
+        android:clickable="true"
+        android:onClick="start_click"
+        android:textColor="@color/get_started"
+        android:text="@string/text_start" />
 
 </RelativeLayout>

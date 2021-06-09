@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -18,20 +19,40 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     RelativeLayout layout;
+    Animation lastAnimation;
+    TextView textGetStarted;
+    Animation startAnimation;
+    boolean started = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView textWelcome = (TextView) findViewById(R.id.text_welcome);
+        TextView textWelcome = findViewById(R.id.text_welcome);
+        textGetStarted = findViewById(R.id.text_start);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.start_app);
         textWelcome.startAnimation(animation);
+        animation = AnimationUtils.loadAnimation(this, R.anim.get_started);
+        animation.setStartOffset(3000 + 90 * 10 * 3);
+        textGetStarted.startAnimation(animation);
 
         layout = findViewById(R.id.start_layout);
         drawLines();
 
+
         //layout.addView(new Point(this, 200, 700));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (lastAnimation != null) {
+            if (lastAnimation.hasEnded()) {
+                Log.i("point", "lastAnimation.hasEnded");
+                setContentView(R.layout.start_working);
+            }
+        }
     }
 
     private void drawLines() {
@@ -60,6 +81,41 @@ public class MainActivity extends AppCompatActivity {
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
             animation.setStartOffset(timeOffset + i * 10);
             textPoints[i].startAnimation(animation);
+            if (color == Color.GREEN && i == textPoints.length - 1) {
+                lastAnimation = animation;
+            }
+        }
+    }
+
+    public void start_click(View view) {
+        textGetStarted.setTextColor(getResources().getColor(R.color.get_started_clicked));
+        textGetStarted.setBackgroundColor(getResources().getColor(R.color.get_started));
+
+        startAnimation = AnimationUtils.loadAnimation(this, R.anim.starting);
+        layout.startAnimation(startAnimation);
+
+        Timer timer = new Timer(50);
+        timer.start();
+    }
+
+    private class Timer extends CountDownTimer {
+
+        public Timer(long countDownInterval) {
+            super(Integer.MAX_VALUE, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            if (startAnimation.hasEnded()) {
+                setContentView(R.layout.start_working);
+                Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.starting2);
+                layout.startAnimation(animation);
+                cancel();
+            }
+        }
+
+        @Override
+        public void onFinish() {
         }
     }
 
