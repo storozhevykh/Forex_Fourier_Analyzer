@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/fragments_padding"
+    tools:context=".ChartConfigure"
+    android:id="@+id/chart_configure"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chart fragment" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_number_of_modes"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_number_of_modes" />
+
+        <ImageView
+            android:id="@+id/btn_help_number_of_modes"
+            android:layout_toRightOf="@id/text_number_of_modes"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_number_of_modes"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_number_of_harmonics"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_number_of_harmonics" />
+
+        <ImageView
+            android:id="@+id/btn_help_number_of_harmonics"
+            android:layout_toRightOf="@id/text_number_of_harmonics"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_number_of_harmonics"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_period_of_approximation"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_period_of_approximation" />
+
+        <ImageView
+            android:id="@+id/btn_help_period_of_approximation"
+            android:layout_toRightOf="@id/text_period_of_approximation"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_period_of_approximation"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_predicted_bars"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_predicted_bars" />
+
+        <ImageView
+            android:id="@+id/btn_help_predicted_bars"
+            android:layout_toRightOf="@id/text_predicted_bars"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_predicted_bars"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_min_periods"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_min_periods" />
+
+        <ImageView
+            android:id="@+id/btn_help_min_periods"
+            android:layout_toRightOf="@id/text_min_periods"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_min_periods"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_max_periods"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_max_periods" />
+
+        <ImageView
+            android:id="@+id/btn_help_max_periods"
+            android:layout_toRightOf="@id/text_max_periods"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_max_periods"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_period_step"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_period_step" />
+
+        <ImageView
+            android:id="@+id/btn_help_period_step"
+            android:layout_toRightOf="@id/text_period_step"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_period_step"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_amplitude_steps"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_amplitude_steps" />
+
+        <ImageView
+            android:id="@+id/btn_help_amplitude_steps"
+            android:layout_toRightOf="@id/text_amplitude_steps"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_amplitude_steps"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_phase_step"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_phase_step" />
+
+        <ImageView
+            android:id="@+id/btn_help_phase_step"
+            android:layout_toRightOf="@id/text_phase_step"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_phase_step"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_high_freq_filter"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_high_freq_filter" />
+
+        <ImageView
+            android:id="@+id/btn_help_high_freq_filter"
+            android:layout_toRightOf="@id/text_high_freq_filter"
+            style="@style/configure_help_style"/>
+
+        <EditText
+            android:id="@+id/edit_high_freq_filter"
+            style="@style/configure_edit_style"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_dynamic_approximation"
+            style="@style/configure_text_style"
+            android:text="@string/parameter_dynamic_approximation" />
+
+        <ImageView
+            android:id="@+id/btn_help_dynamic_approximation"
+            android:layout_toRightOf="@id/text_dynamic_approximation"
+            style="@style/configure_help_style"/>
+
+        <CheckBox
+            android:id="@+id/dynamic_approximation_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -26,4 +26,42 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textStyle">italic|bold</item>
     </style>
+
+    <style name="spinner_item_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="configure_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="configure_help_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/question_sign</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="configure_edit_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:text">value</item>
+    </style>
+
 </resources>

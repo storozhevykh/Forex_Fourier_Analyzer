@@ -3,6 +3,7 @@ package com.storozhevykh.forexfourieranalyzer;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,10 +20,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     RelativeLayout layout;
-    Animation lastAnimation;
     TextView textGetStarted;
     Animation startAnimation;
-    boolean started = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +36,12 @@ public class MainActivity extends AppCompatActivity {
         animation.setStartOffset(3000 + 90 * 10 * 3);
         textGetStarted.startAnimation(animation);
 
-        layout = findViewById(R.id.start_layout);
+        layout = findViewById(R.id.start_layout); //start_layout == activity_main
         drawLines();
-
-
-        //layout.addView(new Point(this, 200, 700));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (lastAnimation != null) {
-            if (lastAnimation.hasEnded()) {
-                Log.i("point", "lastAnimation.hasEnded");
-                setContentView(R.layout.start_working);
-            }
-        }
     }
 
     private void drawLines() {
-
+        // Draw animated Fourier lines
         //layout.addView(new FourierLines(this, 100, 700));
         double pi = Math.PI;
         drawPoints(80, Color.RED, 3000, pi / 2);
@@ -73,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             textPoints[i].setText(".");
             textPoints[i].setTextSize(40);
             textPoints[i].setTextColor(color);
-            //textPoints[i].setVisibility(View.INVISIBLE);
             y = (int) Math.round(800 + amplitude * Math.sin(omega * (100 + i * 10) + phase));
             textPoints[i].setX(100 + i * 10);
             textPoints[i].setY(y);
@@ -81,20 +65,19 @@ public class MainActivity extends AppCompatActivity {
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
             animation.setStartOffset(timeOffset + i * 10);
             textPoints[i].startAnimation(animation);
-            if (color == Color.GREEN && i == textPoints.length - 1) {
-                lastAnimation = animation;
-            }
         }
     }
 
     public void start_click(View view) {
+        // Listener for click on "Get Started" button
         textGetStarted.setTextColor(getResources().getColor(R.color.get_started_clicked));
         textGetStarted.setBackgroundColor(getResources().getColor(R.color.get_started));
 
         startAnimation = AnimationUtils.loadAnimation(this, R.anim.starting);
         layout.startAnimation(startAnimation);
 
-        Timer timer = new Timer(50);
+        // Timer is used to delay the open of the new activity
+        Timer timer = new Timer(5);
         timer.start();
     }
 
@@ -107,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onTick(long millisUntilFinished) {
             if (startAnimation.hasEnded()) {
-                setContentView(R.layout.start_working);
-                Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.starting2);
-                layout.startAnimation(animation);
+                setContentView(R.layout.start_working); // set empty layout for smooth transition to BigMenuActivity
+                Intent intent = new Intent(MainActivity.this, BigMenuActivity.class);
+                startActivity(intent);
                 cancel();
             }
         }
@@ -131,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             super(context);
             this.x = x;
             this.y = y;
-            //Log.i("point", "x = " + x + "; y = " + y);
         }
 
         @Override
