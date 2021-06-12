@@ -63,12 +63,22 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="configure_error_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:src">@drawable/error_sign</item>
+        <item name="android:clickable">true</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
     <style name="configure_edit_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginRight">8dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:text">value</item>
     </style>

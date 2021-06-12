@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,24 +44,36 @@ public class BigMenuActivity extends FragmentActivity implements AdapterView.OnI
         fragmentManager = getSupportFragmentManager();
 
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragmentContainer, FourierConfigureFragment);
+        fragmentTransaction.add(R.id.fragmentContainer, FourierConfigureFragment, FourierConfigure.TAG);
         fragmentTransaction.commit();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (position == 0) {
-            if (fragmentManager.findFragmentByTag("FourierConfigure") == null) {
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentContainer, FourierConfigureFragment);
-                fragmentTransaction.commit();
+        if (position == 0 && fragmentManager.findFragmentByTag(ChartConfigure.TAG) != null) {
+            if (parametersHandler.checkChartParameters()) {
+                if (fragmentManager.findFragmentByTag(FourierConfigure.TAG) == null) {
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainer, FourierConfigureFragment, FourierConfigure.TAG);
+                    fragmentTransaction.commit();
+                }
+            }
+            else {
+                spinner.setSelection(1);
+                return;
             }
         }
-        if (position == 1) {
-            if (fragmentManager.findFragmentByTag("ChartConfigure") == null) {
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentContainer, ChartConfigureFragment);
-                fragmentTransaction.commit();
+        if (position == 1 && fragmentManager.findFragmentByTag(FourierConfigure.TAG) != null) {
+            if (parametersHandler.checkFourierParameters()) {
+                if (fragmentManager.findFragmentByTag(ChartConfigure.TAG) == null) {
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainer, ChartConfigureFragment, ChartConfigure.TAG);
+                    fragmentTransaction.commit();
+                }
+            }
+            else {
+                spinner.setSelection(0);
+                return;
             }
         }
     }

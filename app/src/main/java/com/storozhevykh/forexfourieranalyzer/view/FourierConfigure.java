@@ -69,7 +69,7 @@ public class FourierConfigure extends Fragment {
     public void onStart() {
         super.onStart();
         BigMenuActivity bigMenuActivity = (BigMenuActivity) getActivity();
-        bigMenuActivity.getParametersHandler().changeValuesInEdit();
+        bigMenuActivity.getParametersHandler().changeFourierValuesInEdit();
 
         //Set onClick to help buttons
         getActivity().findViewById(R.id.btn_help_number_of_modes).setOnClickListener(bigMenuActivity);
@@ -88,7 +88,7 @@ public class FourierConfigure extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        ((BigMenuActivity) getActivity()).getParametersHandler().setValuesFromEdit();
+        //((BigMenuActivity) getActivity()).getParametersHandler().setFourierValuesFromEdit();
     }
 
 }

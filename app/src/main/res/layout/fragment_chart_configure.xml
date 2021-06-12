@@ -9,7 +9,6 @@
     android:id="@+id/chart_configure"
     android:orientation="vertical">
 
-
     <Spinner
         android:id="@+id/choose_pair_spinner"
         android:layout_width="wrap_content"
@@ -43,8 +42,13 @@
 
         <EditText
             android:id="@+id/edit_bars_in_history"
+            android:layout_toLeftOf="@id/btn_error_bars_in_history"
             style="@style/configure_edit_style"
             android:inputType="number"/>
+
+        <ImageView
+            android:id="@+id/btn_error_bars_in_history"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 

@@ -64,4 +64,16 @@ public class ChartConfigure extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chart_configure, container, false);
     }
+
+    public void onStart() {
+        super.onStart();
+        BigMenuActivity bigMenuActivity = (BigMenuActivity) getActivity();
+        bigMenuActivity.getParametersHandler().changeChartValuesInEdit();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //((BigMenuActivity) getActivity()).getParametersHandler().setChartValuesFromEdit();
+    }
 }

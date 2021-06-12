@@ -24,8 +24,13 @@
 
         <EditText
             android:id="@+id/edit_number_of_modes"
+            android:layout_toLeftOf="@id/btn_error_number_of_modes"
             style="@style/configure_edit_style"
             android:inputType="number"/>
+
+        <ImageView
+            android:id="@+id/btn_error_number_of_modes"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -45,8 +50,13 @@
 
         <EditText
             android:id="@+id/edit_number_of_harmonics"
+            android:layout_toLeftOf="@id/btn_error_number_of_harmonics"
             style="@style/configure_edit_style"
             android:inputType="number"/>
+
+        <ImageView
+            android:id="@+id/btn_error_number_of_harmonics"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -66,8 +76,13 @@
 
         <EditText
             android:id="@+id/edit_period_of_approximation"
+            android:layout_toLeftOf="@id/btn_error_period_of_approximation"
             style="@style/configure_edit_style"
             android:inputType="number"/>
+
+        <ImageView
+            android:id="@+id/btn_error_period_of_approximation"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -87,8 +102,13 @@
 
         <EditText
             android:id="@+id/edit_predicted_bars"
+            android:layout_toLeftOf="@id/btn_error_predicted_bars"
             style="@style/configure_edit_style"
             android:inputType="number"/>
+
+        <ImageView
+            android:id="@+id/btn_error_predicted_bars"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -108,8 +128,13 @@
 
         <EditText
             android:id="@+id/edit_min_periods"
+            android:layout_toLeftOf="@id/btn_error_min_periods"
             style="@style/configure_edit_style"
             android:inputType="numberDecimal"/>
+
+        <ImageView
+            android:id="@+id/btn_error_min_periods"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -129,8 +154,13 @@
 
         <EditText
             android:id="@+id/edit_max_periods"
+            android:layout_toLeftOf="@id/btn_error_max_periods"
             style="@style/configure_edit_style"
             android:inputType="numberDecimal"/>
+
+        <ImageView
+            android:id="@+id/btn_error_max_periods"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -150,8 +180,13 @@
 
         <EditText
             android:id="@+id/edit_period_step"
+            android:layout_toLeftOf="@id/btn_error_period_step"
             style="@style/configure_edit_style"
             android:inputType="numberDecimal"/>
+
+        <ImageView
+            android:id="@+id/btn_error_period_step"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -171,8 +206,13 @@
 
         <EditText
             android:id="@+id/edit_amplitude_steps"
+            android:layout_toLeftOf="@id/btn_error_amplitude_steps"
             style="@style/configure_edit_style"
             android:inputType="number"/>
+
+        <ImageView
+            android:id="@+id/btn_error_amplitude_steps"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -192,8 +232,13 @@
 
         <EditText
             android:id="@+id/edit_phase_step"
+            android:layout_toLeftOf="@id/btn_error_phase_step"
             style="@style/configure_edit_style"
             android:inputType="numberDecimal"/>
+
+        <ImageView
+            android:id="@+id/btn_error_phase_step"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -213,8 +258,13 @@
 
         <EditText
             android:id="@+id/edit_high_freq_filter"
+            android:layout_toLeftOf="@id/btn_error_high_freq_filter"
             style="@style/configure_edit_style"
             android:inputType="number"/>
+
+        <ImageView
+            android:id="@+id/btn_error_high_freq_filter"
+            style="@style/configure_error_style"/>
 
     </RelativeLayout>
 
@@ -237,10 +287,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="32dp"
             android:text="" />
 
-
     </RelativeLayout>
+
 
 </LinearLayout>

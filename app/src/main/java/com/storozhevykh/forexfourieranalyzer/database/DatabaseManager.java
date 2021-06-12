@@ -18,7 +18,7 @@ public class DatabaseManager {
         };
         task.execute();
         try {
-            return (List<ParameterUnit>) task.get();
+            return task.get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
