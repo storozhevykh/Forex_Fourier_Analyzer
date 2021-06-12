@@ -1,4 +1,4 @@
-package com.storozhevykh.forexfourieranalyzer;
+package com.storozhevykh.forexfourieranalyzer.view;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.storozhevykh.forexfourieranalyzer.R;
 
 /**
  * A simple {@link Fragment} subclass.

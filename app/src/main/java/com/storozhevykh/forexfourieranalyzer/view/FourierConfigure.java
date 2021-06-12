@@ -1,4 +1,4 @@
-package com.storozhevykh.forexfourieranalyzer;
+package com.storozhevykh.forexfourieranalyzer.view;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.storozhevykh.forexfourieranalyzer.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,4 +64,31 @@ public class FourierConfigure extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fourier_configure, container, false);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        BigMenuActivity bigMenuActivity = (BigMenuActivity) getActivity();
+        bigMenuActivity.getParametersHandler().changeValuesInEdit();
+
+        //Set onClick to help buttons
+        getActivity().findViewById(R.id.btn_help_number_of_modes).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_number_of_harmonics).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_period_of_approximation).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_predicted_bars).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_min_periods).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_max_periods).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_period_step).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_amplitude_steps).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_phase_step).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_high_freq_filter).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_help_dynamic_approximation).setOnClickListener(bigMenuActivity);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((BigMenuActivity) getActivity()).getParametersHandler().setValuesFromEdit();
+    }
+
 }

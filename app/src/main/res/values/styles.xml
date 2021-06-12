@@ -31,9 +31,17 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">left</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:padding">16dp</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="parameters_spinner_item_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="configure_text_style">
@@ -43,6 +51,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="configure_help_style">

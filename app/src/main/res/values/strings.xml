@@ -7,8 +7,51 @@
         <item>Configure Fourier parameters</item>
         <item>Configure currency chart</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="tf_items">
+        <item>M1</item>
+        <item>M5</item>
+        <item>M15</item>
+        <item>M30</item>
+        <item>H1</item>
+        <item>H4</item>
+        <item>D1</item>
+        <item>W1</item>
+        <item>MN</item>
+    </string-array>
+
+    <string-array name="pair_items">
+        <item>EURUSD</item>
+        <item>GBPUSD</item>
+        <item>USDCHF</item>
+        <item>USDJPY</item>
+        <item>USDCAD</item>
+        <item>AUDUSD</item>
+        <item>NZDUSD</item>
+        <item>AUDCAD</item>
+        <item>AUDCHF</item>
+        <item>AUDJPY</item>
+        <item>AUDNZD</item>
+        <item>CADCHF</item>
+        <item>CADJPY</item>
+        <item>CHFJPY</item>
+        <item>EURAUD</item>
+        <item>EURCAD</item>
+        <item>EURCHF</item>
+        <item>EURGBP</item>
+        <item>EURJPY</item>
+        <item>EURNZD</item>
+        <item>GBPAUD</item>
+        <item>GBPCAD</item>
+        <item>GBPCHF</item>
+        <item>GBPJPY</item>
+        <item>GBPNZD</item>
+        <item>NZDCAD</item>
+        <item>NZDCHF</item>
+        <item>NZDJPY</item>
+    </string-array>
+
+    <string name="parameter_bars_in_history">Bars in history</string>
 
     <string name="parameter_number_of_modes">Number of modes</string>
     <string name="parameter_number_of_harmonics">Number of harmonics</string>
@@ -22,5 +65,45 @@
     <string name="parameter_high_freq_filter">High frequency filter</string>
     <string name="parameter_dynamic_approximation">Dynamic approximation</string>
 
+    <string name="number_of_modes_help_text">The number of modes used for approximation.
+        Modes divides the period of approximation in segments. Every mode may consist of several harmonics.
+        Harmonic expansion of the whole given section of the chart is carried out in the first mode.
+        Then the period of harmonic of the highest frequency in the first mode is chosen as the approximation length for the next mode etc.
+        We seek harmonics of low frequency at long periods and harmonics of high frequency at short periods this way.\n
+        An example:\nImaging the approximation of section of chart having length of 1000 bars by 2 modes of 3 harmonics each.
+        First of all the indicator finds 3 harmonics in such a way that its sum approximate the given section of chart in the best way.
+        Suppose they are harmonics with period of 600, 450 and 320 bars.
+        Then the indicator will try to approximate better the section of chart with length of 320 bars by adding of 3 harmonics to the first mode.
+        A curve being a sum of all modes will be plotted in the extrapolated region.</string>
+
+    <string name="number_of_harmonics_help_text">Approximating function is a linear sum of harmonics – sines with different period, amplitude and
+phase. The more harmonics the more precisely approximation.</string>
+
+    <string name="period_of_approximation_help_text">The prediction of price moving in future
+is based on the approximated segment of the chart.</string>
+
+    <string name="predicted_bars_help_text">The length of extrapolation of the approximated segment of the chart in future.
+    The extrapolated curve is painted into two colors. The orange color corresponds to the segment equals to the minimal period among all harmonics used for approximation.
+    This segment should be considered as reliable prediction. The rest of the curve is painted into yellow.</string>
+
+    <string name="min_periods_help_text">The minimal number of periods packed in each harmonic. One period corresponds to sine changes from 0 to 2pi.</string>
+
+    <string name="max_periods_help_text">The maximal number of periods packed in each harmonic. One period corresponds to sine changes from 0 to 2pi.</string>
+
+    <string name="period_step_help_text">The period step preset the precision of adjustment of period for each harmonic used for approximation.
+    This parameter determines the step of period in bars for the first mode. Step of period for next modes is proportional to their length.
+    The resulting number of period steps can be estimated through dividing the period of approximation by the period step.</string>
+
+    <string name="amplitude_steps_help_text">The number of steps for calculation of amplitude of harmonics. The range of searching is determined automatically.</string>
+
+    <string name="phase_step_help_text">The phase step preset the precision of adjustment of phase for each harmonic used for approximation.
+    The resulting number of phase steps can be estimated through dividing 2pi by the phase step.</string>
+
+    <string name="high_freq_filter_help_text">The high frequency filter determines the minimal admissible period of a harmonic.
+    The period of harmonics can becomes too small during calculation because of the "modes" approach.
+    This parameter limits it to avoid oscillations having very high frequency.</string>
+
+    <string name="dynamic_approximation_help_text">Dynamic approximation allows one to consider the nearest past in a greater degree during calculation of harmonics.
+        It partly substitute dividing of approximated section on modes. That is to say last oscillations of the price contribute more even at the one-mode regime.</string>
 
 </resources>

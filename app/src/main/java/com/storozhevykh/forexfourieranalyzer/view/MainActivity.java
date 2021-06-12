@@ -1,4 +1,4 @@
-package com.storozhevykh.forexfourieranalyzer;
+package com.storozhevykh.forexfourieranalyzer.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,9 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.storozhevykh.forexfourieranalyzer.R;
 
 public class MainActivity extends AppCompatActivity {
 
