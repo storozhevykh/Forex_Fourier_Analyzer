@@ -2,6 +2,8 @@
     <string name="app_name">Forex Fourier Analyzer</string>
     <string name="text_welcome">WELCOME TO\nForex Fourier Analyzer</string>
     <string name="text_start">get started</string>
+    <string name="text_set_default">Set default parameters</string>
+    <string name="text_go_to_chart">Go to chart</string>
 
     <string-array name="big_menu">
         <item>Configure Fourier parameters</item>
@@ -65,6 +67,9 @@
     <string name="parameter_high_freq_filter">High frequency filter</string>
     <string name="parameter_dynamic_approximation">Dynamic approximation</string>
 
+
+    <string name="error_message">INVALID VALUE</string>
+
     <string name="number_of_modes_help_text">The number of modes used for approximation.
         Modes divides the period of approximation in segments. Every mode may consist of several harmonics.
         Harmonic expansion of the whole given section of the chart is carried out in the first mode.
@@ -105,5 +110,29 @@ is based on the approximated segment of the chart.</string>
 
     <string name="dynamic_approximation_help_text">Dynamic approximation allows one to consider the nearest past in a greater degree during calculation of harmonics.
         It partly substitute dividing of approximated section on modes. That is to say last oscillations of the price contribute more even at the one-mode regime.</string>
+
+    <string name="bars_in_history_help_text">This parameter determines the total size of the currency chart that can be scrolled to the past.</string>
+
+    <string name="number_of_modes_error_text">The number of modes cannot be less than 1 or more than 10.</string>
+
+    <string name="number_of_harmonics_error_text">The number of harmonics cannot be less than 1 or more than 10.</string>
+
+    <string name="period_of_approximation_error_text">The period of approximation cannot be less than 50 or exceed the number of bars in history.</string>
+
+    <string name="predicted_bars_error_text">The number of predicted bars cannot be less than 10 or exceed the period of approximation.</string>
+
+    <string name="min_periods_error_text">The minimal number of periods cannot be less than 0.1 or more than 4 or exceed the maximal number of periods.</string>
+
+    <string name="max_periods_error_text">The maximal number of periods cannot be more than 10 or less than the minimal number of periods.</string>
+
+    <string name="period_step_error_text">The period step must lay in the range 1 – 50.</string>
+
+    <string name="amplitude_steps_error_text">The number of amplitude steps must lay in the range 10 – 100.</string>
+
+    <string name="phase_step_error_text">The phase step must lay in the range 0.01 – 0.5.</string>
+
+    <string name="high_freq_filter_error_text">The high frequency filter must lay in the range 10 – 500.</string>
+
+    <string name="bars_in_history_error_text">The number of bars in history must lay in the range 100 – 100 000 and cannot be less than the period of approximation.</string>
 
 </resources>

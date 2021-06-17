@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.storozhevykh.forexfourieranalyzer.R;
 
@@ -69,6 +70,11 @@ public class ChartConfigure extends Fragment {
         super.onStart();
         BigMenuActivity bigMenuActivity = (BigMenuActivity) getActivity();
         bigMenuActivity.getParametersHandler().changeChartValuesInEdit();
+
+        getActivity().findViewById(R.id.btn_help_bars_in_history).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_bars_in_history).setOnClickListener(bigMenuActivity);
+        //Set onTexChangedListener to edit fields
+        ((EditText) getActivity().findViewById(R.id.edit_bars_in_history)).addTextChangedListener(bigMenuActivity);
     }
 
     @Override

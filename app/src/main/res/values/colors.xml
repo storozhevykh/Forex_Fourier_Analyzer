@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="get_started">#005704</color>
     <color name="get_started_clicked">#EDC576</color>
+    <color name="top_bottom_fields">#ECF4EB</color>
 </resources>

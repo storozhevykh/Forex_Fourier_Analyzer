@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.storozhevykh.forexfourieranalyzer.R;
 
@@ -71,6 +72,9 @@ public class FourierConfigure extends Fragment {
         BigMenuActivity bigMenuActivity = (BigMenuActivity) getActivity();
         bigMenuActivity.getParametersHandler().changeFourierValuesInEdit();
 
+        //Set onClick to "Set default parameters" button
+        getActivity().findViewById(R.id.btn_set_default).setOnClickListener(bigMenuActivity);
+
         //Set onClick to help buttons
         getActivity().findViewById(R.id.btn_help_number_of_modes).setOnClickListener(bigMenuActivity);
         getActivity().findViewById(R.id.btn_help_number_of_harmonics).setOnClickListener(bigMenuActivity);
@@ -83,6 +87,30 @@ public class FourierConfigure extends Fragment {
         getActivity().findViewById(R.id.btn_help_phase_step).setOnClickListener(bigMenuActivity);
         getActivity().findViewById(R.id.btn_help_high_freq_filter).setOnClickListener(bigMenuActivity);
         getActivity().findViewById(R.id.btn_help_dynamic_approximation).setOnClickListener(bigMenuActivity);
+
+        //Set onClick to error buttons
+        getActivity().findViewById(R.id.btn_error_number_of_modes).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_number_of_harmonics).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_period_of_approximation).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_predicted_bars).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_min_periods).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_max_periods).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_period_step).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_amplitude_steps).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_phase_step).setOnClickListener(bigMenuActivity);
+        getActivity().findViewById(R.id.btn_error_high_freq_filter).setOnClickListener(bigMenuActivity);
+
+        //Set onTexChangedListener to edit fields
+        ((EditText) getActivity().findViewById(R.id.edit_number_of_modes)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_number_of_harmonics)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_period_of_approximation)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_predicted_bars)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_min_periods)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_max_periods)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_period_step)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_amplitude_steps)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_phase_step)).addTextChangedListener(bigMenuActivity);
+        ((EditText) getActivity().findViewById(R.id.edit_high_freq_filter)).addTextChangedListener(bigMenuActivity);
     }
 
     @Override

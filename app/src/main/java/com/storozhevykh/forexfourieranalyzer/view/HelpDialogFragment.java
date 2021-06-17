@@ -75,7 +75,7 @@ public class HelpDialogFragment extends DialogFragment {
         TextView headTextView = new TextView(getActivity());
         headTextView.setText(parameterName);
         headTextView.setPadding(16,8,8,8);
-        headTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
+        headTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         headTextView.setTypeface(headTextView.getTypeface(), Typeface.BOLD_ITALIC);
 
         TextView textView = new TextView(getActivity());

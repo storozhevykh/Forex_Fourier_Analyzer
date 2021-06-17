@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public void start_click(View view) {
         // Listener for click on "Get Started" button
         textGetStarted.setTextColor(getResources().getColor(R.color.get_started_clicked));
-        textGetStarted.setBackgroundColor(getResources().getColor(R.color.get_started));
+        textGetStarted.setBackground(getResources().getDrawable(R.drawable.set_default_anim_border));
 
         startAnimation = AnimationUtils.loadAnimation(this, R.anim.starting);
         layout.startAnimation(startAnimation);

@@ -27,14 +27,42 @@
         <item name="android:textStyle">italic|bold</item>
     </style>
 
+    <style name="go_to_chart_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">italic|bold</item>
+    </style>
+
+    <style name="btn_default_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="spinner_item_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">left</item>
         <item name="android:textSize">24sp</item>
         <item name="android:padding">16dp</item>
+        <item name="android:background">@color/top_bottom_fields</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
+
+    <!--<item name="android:background">@color/top_bottom_fields</item>
+    -->
 
     <style name="parameters_spinner_item_style">
         <item name="android:layout_width">wrap_content</item>
