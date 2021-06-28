@@ -10,4 +10,5 @@
     <color name="get_started">#005704</color>
     <color name="get_started_clicked">#EDC576</color>
     <color name="top_bottom_fields">#ECF4EB</color>
+    <color name="disabled">#A1A1A1</color>
 </resources>

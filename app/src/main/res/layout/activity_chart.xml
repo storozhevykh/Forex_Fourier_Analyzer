@@ -7,5 +7,60 @@
     tools:context=".view.ChartActivity">
 
 
+    <TextView
+        android:id="@+id/scale_minus_clicked"
+        style="@style/chart_scale_style"
+        android:layout_marginLeft="40dp"
+        android:text="\u2014"
+        android:background="@drawable/scale_border_clicked"/>
+    <TextView
+        android:id="@+id/scale_minus"
+        style="@style/chart_scale_style"
+        android:layout_marginLeft="40dp"
+        android:text="\u2014"
+        android:clickable="true"
+        android:background="@drawable/scale_border"/>
+    <TextView
+        android:id="@+id/scale_text"
+        style="@style/chart_scale_style"
+        android:layout_toRightOf="@id/scale_minus"
+        android:text="scale"/>
+    <TextView
+        android:id="@+id/scale_plus_clicked"
+        style="@style/chart_scale_style"
+        android:layout_toRightOf="@id/scale_text"
+        android:text="+"
+        android:background="@drawable/scale_border_clicked"/>
+    <TextView
+        android:id="@+id/scale_plus"
+        style="@style/chart_scale_style"
+        android:layout_toRightOf="@id/scale_text"
+        android:text="+"
+        android:clickable="true"
+        android:background="@drawable/scale_border"/>
+
+    <LinearLayout
+        android:id="@+id/chart_fragment_container"
+        android:layout_below="@id/scale_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        />
+
+    <ProgressBar
+        android:id="@+id/quotes_loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/quotes_loading_text"
+        style="@style/loading_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quotes_loading_indicator"
+        android:text="@string/loading_text"/>
+
 
 </RelativeLayout>

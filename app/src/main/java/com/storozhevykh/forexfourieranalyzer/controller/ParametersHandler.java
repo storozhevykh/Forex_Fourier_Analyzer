@@ -243,127 +243,145 @@ public class ParametersHandler {
         parameterUnitList.add(new ParameterUnit("maxBarsInHistory", maxBarsInHistory, 0));
     }
 
-    public boolean checkFourierParameters() {
+    public boolean checkFourierParameters(int mode) {
         //Log.i("check", "checkFourierParameters");
         //setFourierValuesFromEdit();
         boolean result = true;
-        if (numberOfModes < numberOfModes_MIN_VALUE || numberOfModes > numberOfModes_MAX_VALUE) {
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setClickable(false);
-        }
+        if (mode == 0) {
+            if (numberOfModes < numberOfModes_MIN_VALUE || numberOfModes > numberOfModes_MAX_VALUE) {
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_modes).setClickable(false);
+            }
 
-        if (numberOfHarmonics < numberOfHarmonics_MIN_VALUE || numberOfHarmonics > numberOfHarmonics_MAX_VALUE) {
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setClickable(false);
-        }
+            if (numberOfHarmonics < numberOfHarmonics_MIN_VALUE || numberOfHarmonics > numberOfHarmonics_MAX_VALUE) {
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_number_of_harmonics).setClickable(false);
+            }
 
-        if (periodOfApproximation < periodOfApproximation_MIN_VALUE || periodOfApproximation > maxBarsInHistory) {
-            bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setClickable(false);
-        }
+            if (periodOfApproximation < periodOfApproximation_MIN_VALUE || periodOfApproximation > maxBarsInHistory) {
+                bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_period_of_approximation).setClickable(false);
+            }
 
-        if (predictedBars < predictedBars_MIN_VALUE || predictedBars > periodOfApproximation) {
-            bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setClickable(false);
-        }
+            if (predictedBars < predictedBars_MIN_VALUE || predictedBars > periodOfApproximation) {
+                bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_predicted_bars).setClickable(false);
+            }
 
-        if (minPeriods < minPeriods_MIN_VALUE || minPeriods > minPeriods_MAX_VALUE || minPeriods > maxPeriods) {
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(false);
-        }
+            if (minPeriods < minPeriods_MIN_VALUE || minPeriods > minPeriods_MAX_VALUE || minPeriods > maxPeriods) {
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(false);
+            }
 
-        if (maxPeriods > maxPeriods_MAX_VALUE || minPeriods > maxPeriods) {
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(false);
-        }
+            if (maxPeriods > maxPeriods_MAX_VALUE || minPeriods > maxPeriods) {
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_min_periods).setClickable(false);
+            }
 
-        if (periodStep < periodStep_MIN_VALUE || periodStep > periodStep_MAX_VALUE) {
-            bigMenuActivity.findViewById(R.id.btn_error_period_step).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_period_step).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_period_step).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_period_step).setClickable(false);
-        }
+            if (periodStep < periodStep_MIN_VALUE || periodStep > periodStep_MAX_VALUE) {
+                bigMenuActivity.findViewById(R.id.btn_error_period_step).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_period_step).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_period_step).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_period_step).setClickable(false);
+            }
 
-        if (amplitudeSteps < amplitudeSteps_MIN_VALUE || amplitudeSteps > amplitudeSteps_MAX_VALUE) {
-            bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setClickable(false);
-        }
+            if (amplitudeSteps < amplitudeSteps_MIN_VALUE || amplitudeSteps > amplitudeSteps_MAX_VALUE) {
+                bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_amplitude_steps).setClickable(false);
+            }
 
-        if (phaseStep < phaseStep_MIN_VALUE || phaseStep > phaseStep_MAX_VALUE) {
-            bigMenuActivity.findViewById(R.id.btn_error_phase_step).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_phase_step).setClickable(true);
-            result = false;
-        }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_phase_step).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_phase_step).setClickable(false);
-        }
+            if (phaseStep < phaseStep_MIN_VALUE || phaseStep > phaseStep_MAX_VALUE) {
+                bigMenuActivity.findViewById(R.id.btn_error_phase_step).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_phase_step).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_phase_step).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_phase_step).setClickable(false);
+            }
 
-        if (highFreqFilter < highFreqFilter_MIN_VALUE || highFreqFilter > highFreqFilter_MAX_VALUE) {
-            bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setClickable(true);
-            result = false;
+            if (highFreqFilter < highFreqFilter_MIN_VALUE || highFreqFilter > highFreqFilter_MAX_VALUE) {
+                bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setClickable(false);
+            }
         }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_high_freq_filter).setClickable(false);
+        else if (mode == 1) {
+            if (numberOfModes < numberOfModes_MIN_VALUE || numberOfModes > numberOfModes_MAX_VALUE)
+                result = false;
+            if (numberOfHarmonics < numberOfHarmonics_MIN_VALUE || numberOfHarmonics > numberOfHarmonics_MAX_VALUE)
+                result = false;
+            if (periodOfApproximation < periodOfApproximation_MIN_VALUE || periodOfApproximation > maxBarsInHistory)
+                result = false;
+            if (predictedBars < predictedBars_MIN_VALUE || predictedBars > periodOfApproximation)
+                result = false;
+            if (minPeriods < minPeriods_MIN_VALUE || minPeriods > minPeriods_MAX_VALUE || minPeriods > maxPeriods)
+                result = false;
+            if (maxPeriods > maxPeriods_MAX_VALUE || minPeriods > maxPeriods)
+                result = false;
+            if (periodStep < periodStep_MIN_VALUE || periodStep > periodStep_MAX_VALUE)
+                result = false;
+            if (amplitudeSteps < amplitudeSteps_MIN_VALUE || amplitudeSteps > amplitudeSteps_MAX_VALUE)
+                result = false;
+            if (phaseStep < phaseStep_MIN_VALUE || phaseStep > phaseStep_MAX_VALUE)
+                result = false;
+            if (highFreqFilter < highFreqFilter_MIN_VALUE || highFreqFilter > highFreqFilter_MAX_VALUE)
+                result = false;
         }
 
         return result;
     }
 
-    public boolean checkChartParameters() {
+    public boolean checkChartParameters(int mode) {
         //Log.i("check", "checkChartParameters");
         //setChartValuesFromEdit();
         boolean result = true;
-        if (maxBarsInHistory < maxBarsInHistory_MIN_VALUE || maxBarsInHistory > maxBarsInHistory_MAX_VALUE || maxBarsInHistory < periodOfApproximation) {
-            bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setVisibility(View.VISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setClickable(true);
-            result = false;
+        if (mode == 0) {
+            if (maxBarsInHistory < maxBarsInHistory_MIN_VALUE || maxBarsInHistory > maxBarsInHistory_MAX_VALUE || maxBarsInHistory < periodOfApproximation) {
+                bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setVisibility(View.VISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setClickable(true);
+                result = false;
+            } else {
+                bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setVisibility(View.INVISIBLE);
+                bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setClickable(false);
+            }
         }
-        else {
-            bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setVisibility(View.INVISIBLE);
-            bigMenuActivity.findViewById(R.id.btn_error_bars_in_history).setClickable(false);
+        else if (mode == 1) {
+            if (maxBarsInHistory < maxBarsInHistory_MIN_VALUE || maxBarsInHistory > maxBarsInHistory_MAX_VALUE || maxBarsInHistory < periodOfApproximation)
+                result = false;
         }
-
         return result;
     }
 
@@ -417,6 +435,62 @@ public class ParametersHandler {
 
     public void setMaxBarsInHistory(int maxBarsInHistory) {
         this.maxBarsInHistory = maxBarsInHistory;
+    }
+
+    public int getNumberOfModes() {
+        return numberOfModes;
+    }
+
+    public int getNumberOfHarmonics() {
+        return numberOfHarmonics;
+    }
+
+    public int getPeriodOfApproximation() {
+        return periodOfApproximation;
+    }
+
+    public int getPredictedBars() {
+        return predictedBars;
+    }
+
+    public double getMinPeriods() {
+        return minPeriods;
+    }
+
+    public double getMaxPeriods() {
+        return maxPeriods;
+    }
+
+    public int getPeriodStep() {
+        return periodStep;
+    }
+
+    public int getAmplitudeSteps() {
+        return amplitudeSteps;
+    }
+
+    public double getPhaseStep() {
+        return phaseStep;
+    }
+
+    public int getHighFreqFilter() {
+        return highFreqFilter;
+    }
+
+    public boolean isDynamicApproximation() {
+        return dynamicApproximation;
+    }
+
+    public int getSelectedPairIndex() {
+        return selectedPairIndex;
+    }
+
+    public int getSelectedTFIndex() {
+        return selectedTFIndex;
+    }
+
+    public int getMaxBarsInHistory() {
+        return maxBarsInHistory;
     }
 }
 

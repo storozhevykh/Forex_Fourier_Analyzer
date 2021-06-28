@@ -4,6 +4,7 @@
     <string name="text_start">get started</string>
     <string name="text_set_default">Set default parameters</string>
     <string name="text_go_to_chart">Go to chart</string>
+    <string name="loading_text">Loading quotes...</string>
 
     <string-array name="big_menu">
         <item>Configure Fourier parameters</item>
@@ -20,6 +21,18 @@
         <item>D1</item>
         <item>W1</item>
         <item>MN</item>
+    </string-array>
+
+    <string-array name="tf_request">
+        <item>1min</item>
+        <item>5min</item>
+        <item>15min</item>
+        <item>30min</item>
+        <item>1h</item>
+        <item>4h</item>
+        <item>1day</item>
+        <item>1week</item>
+        <item>1month</item>
     </string-array>
 
     <string-array name="pair_items">
@@ -51,6 +64,37 @@
         <item>NZDCAD</item>
         <item>NZDCHF</item>
         <item>NZDJPY</item>
+    </string-array>
+
+    <string-array name="pair_request">
+        <item>EUR/USD</item>
+        <item>GBP/USD</item>
+        <item>USD/CHF</item>
+        <item>USD/JPY</item>
+        <item>USD/CAD</item>
+        <item>AUD/USD</item>
+        <item>NZD/USD</item>
+        <item>AUD/CAD</item>
+        <item>AUD/CHF</item>
+        <item>AUD/JPY</item>
+        <item>AUD/NZD</item>
+        <item>CAD/CHF</item>
+        <item>CAD/JPY</item>
+        <item>CHF/JPY</item>
+        <item>EUR/AUD</item>
+        <item>EUR/CAD</item>
+        <item>EUR/CHF</item>
+        <item>EUR/GBP</item>
+        <item>EUR/JPY</item>
+        <item>EUR/NZD</item>
+        <item>GBP/AUD</item>
+        <item>GBP/CAD</item>
+        <item>GBP/CHF</item>
+        <item>GBP/JPY</item>
+        <item>GBP/NZD</item>
+        <item>NZD/CAD</item>
+        <item>NZD/CHF</item>
+        <item>NZD/JPY</item>
     </string-array>
 
     <string name="parameter_bars_in_history">Bars in history</string>

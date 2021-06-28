@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.storozhevykh.forexfourieranalyzer.controller.ParametersHandler;
 import com.storozhevykh.forexfourieranalyzer.R;
+import com.storozhevykh.forexfourieranalyzer.controller.ParametersOwner;
 
 public class BigMenuActivity extends FragmentActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, TextWatcher {
 
@@ -65,7 +66,7 @@ public class BigMenuActivity extends FragmentActivity implements AdapterView.OnI
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (position == 0 && fragmentManager.findFragmentByTag(ChartConfigure.TAG) != null) {
-            if (parametersHandler.checkChartParameters()) {
+            if (parametersHandler.checkChartParameters(1)) {
                 if (fragmentManager.findFragmentByTag(FourierConfigure.TAG) == null) {
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentContainer, FourierConfigureFragment, FourierConfigure.TAG);
@@ -79,7 +80,7 @@ public class BigMenuActivity extends FragmentActivity implements AdapterView.OnI
             }
         }
         if (position == 1 && fragmentManager.findFragmentByTag(FourierConfigure.TAG) != null) {
-            if (parametersHandler.checkFourierParameters()) {
+            if (parametersHandler.checkFourierParameters(1)) {
                 if (fragmentManager.findFragmentByTag(ChartConfigure.TAG) == null) {
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentContainer, ChartConfigureFragment, ChartConfigure.TAG);
@@ -199,8 +200,15 @@ public class BigMenuActivity extends FragmentActivity implements AdapterView.OnI
 
         //Go to chart button
         if (v.getId() == R.id.btn_go_to_chart) {
-            Intent intent = new Intent(this, ChartActivity.class);
-            startActivity(intent);
+            if (parametersHandler.checkChartParameters(1) && parametersHandler.checkFourierParameters(1)) {
+                parametersHandler.saveParametersToDatabase();
+                ParametersOwner.getInstance().setParameters(parametersHandler.getParameterUnitList());
+                Intent intent = new Intent(this, ChartActivity.class);
+                intent.putExtra("bars", parametersHandler.getMaxBarsInHistory());
+                intent.putExtra("symbol", parametersHandler.getSelectedPairIndex());
+                intent.putExtra("timeframe", parametersHandler.getSelectedTFIndex());
+                startActivity(intent);
+            }
 
         }
     }
@@ -243,14 +251,14 @@ public class BigMenuActivity extends FragmentActivity implements AdapterView.OnI
             if (s == ((EditText) findViewById(R.id.edit_high_freq_filter)).getText()) {
                 parametersHandler.setHighFreqFilter(parametersHandler.safeParseInt(s.toString()));
             }
-            parametersHandler.checkFourierParameters();
+            parametersHandler.checkFourierParameters(0);
         }
 
         if (fragmentManager.findFragmentByTag(ChartConfigure.TAG) != null) {
             if (s == ((EditText) findViewById(R.id.edit_bars_in_history)).getText()) {
                 parametersHandler.setMaxBarsInHistory(parametersHandler.safeParseInt(s.toString()));
             }
-            parametersHandler.checkChartParameters();
+            parametersHandler.checkChartParameters(0);
         }
     }
 }
