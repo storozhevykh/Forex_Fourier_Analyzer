@@ -59,12 +59,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        if(position > predictedBars) {
+        if(position >= predictedBars) {
             BarItem barItem = ChartActivity.getBarsList().get(position - predictedBars);
-            holder.bind(barItem.getDatetime(), String.valueOf(barItem.getHigh()), barItem.getHigh(), barItem.getLow(), barItem.getOpen() < barItem.getClose(), scale);
+            holder.bind(barItem.getDatetime(), String.valueOf(barItem.getHigh()), barItem.getHigh(), barItem.getLow(), barItem.getOpen() < barItem.getClose(), scale, barItem.getFourier());
         }
+        else if (ChartActivity.getPredictionList().size() > 0)
+            holder.bind(scale, ChartActivity.getPredictionList().get(position));
         else
-            holder.bind2();
+            holder.bind(scale);
     }
 
     @Override
@@ -82,18 +84,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemView.invalidate();
         }
 
-        void bind(String date, String close, int high, int low, boolean fill, int scale) {
+        void bind(String date, String close, int high, int low, boolean fill, int scale, int fourier) {
             android.view.ViewGroup.LayoutParams layoutParams = bar.getLayoutParams();
             layoutParams.height = parent.getHeight();
             layoutParams.width = (int) Math.round(Math.pow(2, scale + 2));
-            bar.setBackground(new BarDrawable((int) Math.round(Math.pow(2, scale + 1)), high, (int) Math.round(Math.pow(2, scale + 2)), low, fill));
+            bar.setBackground(new BarDrawable((int) Math.round(Math.pow(2, scale + 1)), high, (int) Math.round(Math.pow(2, scale + 2)), low, fill, fourier, layoutParams.width));
             bar.invalidate();
         }
-        void bind2( ) {
+        void bind(int scale, int fourier) {
             android.view.ViewGroup.LayoutParams layoutParams = bar.getLayoutParams();
             layoutParams.height = parent.getHeight();
             layoutParams.width = (int) Math.round(Math.pow(2, scale + 2));
-            bar.setBackgroundColor(Color.BLUE);
+            bar.setBackground(new BarDrawable((int) Math.round(Math.pow(2, scale + 1)), 0, (int) Math.round(Math.pow(2, scale + 2)), 0, false, fourier, layoutParams.width));
+            bar.invalidate();
+        }
+        void bind(int scale) {
+            android.view.ViewGroup.LayoutParams layoutParams = bar.getLayoutParams();
+            layoutParams.height = parent.getHeight();
+            layoutParams.width = (int) Math.round(Math.pow(2, scale + 2));
+            bar.setBackgroundColor(Color.WHITE);
             bar.invalidate();
         }
     }

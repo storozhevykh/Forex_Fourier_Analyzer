@@ -10,32 +10,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.storozhevykh.forexfourieranalyzer.R;
 import com.storozhevykh.forexfourieranalyzer.controller.ActivityRequestInterface;
+import com.storozhevykh.forexfourieranalyzer.controller.ParametersOwner;
 import com.storozhevykh.forexfourieranalyzer.controller.RecyclerAdapter;
+import com.storozhevykh.forexfourieranalyzer.model.FourierCalculationLogic;
 import com.storozhevykh.forexfourieranalyzer.quotes.BarItem;
 import com.storozhevykh.forexfourieranalyzer.quotes.Quote;
 import com.storozhevykh.forexfourieranalyzer.retrofit.RetrofitRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChartActivity extends AppCompatActivity implements ActivityRequestInterface, View.OnClickListener {
 
     private static List<Quote> quoteList;
     private static List<BarItem> barsList;
+    private static List<Double> calcApproximationList;
+    private static List<Double> calcPredictionList;
+    private static List<Integer> predictionList;
     private ChartFragment chartFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private Handler handler;
 
     private double maxHigh;
     private double minLow;
+    private double onePixelPrice;
 
     private int barsInHistory;
     private String symbol;
@@ -67,6 +77,18 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
         fragmentTransaction.commit();
 
         quoteList = RetrofitRequest.getInstance().getQuotes(this, symbol, timeframe, barsInHistory);
+
+        ProgressBar progressBar = findViewById(R.id.quotes_loading_indicator);
+        TextView percent = findViewById(R.id.progress_percent);
+        handler = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                progressBar.setProgress(msg.what);
+                percent.setText((int) Math.round(100 * msg.what / progressBar.getMax()) + "%");
+                //Log.d("calc", "handleMessage: " + msg.what);
+            }
+        };
+        calcPredictionList = new ArrayList<>();
+        predictionList = new ArrayList<>();
     }
 
     private void updateFragment() {
@@ -122,7 +144,7 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
         minLow = 999999;
         double chartRange = 0;
         int fragmentHeight = 0;
-        double onePixelPrice = 0;
+        onePixelPrice = 0;
 
         for (Quote q : quoteList) {
             if (q.getHigh() > maxHigh)
@@ -152,10 +174,25 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
             barClose = (int) Math.round((maxHigh - q.getClose()) / onePixelPrice);
             barLow =  barHigh + (int) Math.round((q.getHigh() - q.getLow()) / onePixelPrice);
 
-            bars.add(new BarItem(q.getDatetime(), barOpen, barHigh, barLow, barClose));
+            bars.add(new BarItem(q.getDatetime(), barOpen, barHigh, barLow, barClose, 0));
         }
 
         return bars;
+    }
+
+    private void updateBarList() {
+        int fourier;
+        //Log.d("calc", "calcResultList.size() = " + calcResultList.size());
+        for (int i = 0; i < calcApproximationList.size(); i++) {
+            fourier = (int) Math.round((maxHigh - calcApproximationList.get(i)) / onePixelPrice);
+            barsList.get(i).setFourier(fourier);
+        }
+
+        for (int i = 0; i < calcPredictionList.size(); i++) {
+            fourier = (int) Math.round((maxHigh - calcPredictionList.get(i)) / onePixelPrice);
+            predictionList.add(fourier);
+        }
+
     }
 
     public static List<Quote> getQuoteList() {
@@ -201,4 +238,52 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
         return chartScale;
     }
 
+    public static List<Integer> getPredictionList() {
+        return predictionList;
+    }
+
+    public void calculate(View view) {
+
+        FourierCalculationLogic calculationObject = new FourierCalculationLogic(quoteList, handler);
+        int iterations = calculationObject.getIterations();
+
+        ProgressBar progressBar = findViewById(R.id.quotes_loading_indicator);
+        progressBar.setMax(iterations);
+        progressBar.setProgress(0);
+        progressBar.setVisibility(View.VISIBLE);
+        TextView percent = findViewById(R.id.progress_percent);
+        percent.setVisibility(View.VISIBLE);
+        Log.d("calc", "progressBar.getMax() = " + progressBar.getMax());
+        Log.d("calc", "progressBar.getProgress() = " + progressBar.getProgress());
+
+        new AsyncTask<Void, Integer, List<Double[]>>() {
+
+            @Override
+            protected List<Double[]> doInBackground(Void... voids) {
+                Log.d("calc", "Calculation started");
+                //FourierCalculationLogic calculationObject = new FourierCalculationLogic(lists[0], handler);
+                return calculationObject.calculate(maxHigh, minLow);
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                progressBar.setProgress(values[0]);
+            }
+
+            @Override
+            protected void onPostExecute(List<Double[]> doubles) {
+                Log.d("calc", "Calculation finished");
+                calcApproximationList = Arrays.asList(doubles.get(0).clone());
+                calcPredictionList = Arrays.asList(doubles.get(1).clone());
+                updateBarList();
+                progressBar.setVisibility(View.INVISIBLE);
+                percent.setVisibility(View.INVISIBLE);
+                chartFragment.getRecyclerAdapter().notifyDataSetChanged();
+            }
+        }.execute();
+        /*FourierCalculationLogic calculationObject = new FourierCalculationLogic(quoteList);
+        calcResultList = Arrays.asList(calculationObject.calculate(maxHigh, minLow).clone());
+        updateBarList();
+        chartFragment.getRecyclerAdapter().notifyDataSetChanged();*/
+    }
 }

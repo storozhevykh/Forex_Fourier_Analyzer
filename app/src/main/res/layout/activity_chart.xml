@@ -38,6 +38,14 @@
         android:text="+"
         android:clickable="true"
         android:background="@drawable/scale_border"/>
+    <Button
+        android:id="@+id/btn_calc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="do calculation"
+        android:layout_toRightOf="@id/scale_plus"
+        android:layout_marginLeft="30dp"
+        android:onClick="calculate"/>
 
     <LinearLayout
         android:id="@+id/chart_fragment_container"
@@ -49,10 +57,20 @@
 
     <ProgressBar
         android:id="@+id/quotes_loading_indicator"
+        style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/progress_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:text="0%"/>
 
     <TextView
         android:id="@+id/quotes_loading_text"
