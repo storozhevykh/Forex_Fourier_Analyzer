@@ -54,8 +54,8 @@ public class RetrofitRequest {
                     @Override
                     public void onSuccess(@NonNull FullResponse fullResponse) {
                         List<Quote> quoteResp = fullResponse.getValues();
-                        Log.d("MyRequest", "Response size: " + quoteResp.size());
                         if (quoteResp != null) {
+                            Log.d("MyRequest", "Response size: " + quoteResp.size());
                             for (Quote q : quoteResp) {
                                 quoteList.add(q);
                             }

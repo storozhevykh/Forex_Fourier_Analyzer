@@ -14,12 +14,15 @@ public class FourierCalculationLogic {
 
     public int iterations = 0;
     public int iterNumber = 0;
+    public int prevIterNumber = 0;
 
     private List<Quote> quoteList;
     private Double[] close;
     private Double[] approximation;
     private Double[] prediction;
-    private List<Double[]> result;
+    private Double[] baseLine;
+    private List<List<Double[]>> harmonics;
+    private List<List<Double[]>> result;
     private Handler handler;
 
     private int numberOfModes;
@@ -47,6 +50,8 @@ public class FourierCalculationLogic {
         close = new Double[periodOfApproximation];
         approximation = new Double[periodOfApproximation];
         prediction = new Double[predictedBars];
+        harmonics = new ArrayList<>();
+        baseLine = new Double[periodOfApproximation];
         result = new ArrayList<>();
         for (int i = 0; i < periodOfApproximation; i++) {
             close[i] = quoteList.get(i).getClose();
@@ -62,7 +67,7 @@ public class FourierCalculationLogic {
         return (int) Math.round(((maxPeriod - minPeriod) / actualPeriodStep) * amplitudeSteps * (2 * Math.PI / phaseStep) * numberOfHarmonics * numberOfModes);
     }
 
-    public List<Double[]> calculate(double maxHigh, double minLow) {
+    public List<List<Double[]>> calculate(double maxHigh, double minLow) {
 
         double prevDeviation = 0;
         minT = periodOfApproximation;
@@ -81,6 +86,7 @@ public class FourierCalculationLogic {
         int length = periodOfApproximation;
 
         iterations = getIterations();
+        int iterPercent = Math.round(iterations / 100);
 
         //BaseLine
         double kOpt = 0;
@@ -106,7 +112,6 @@ public class FourierCalculationLogic {
                 }
             }
         }
-
 
         for (int mode = 1; mode <= numberOfModes; mode++) {
 
@@ -141,14 +146,11 @@ public class FourierCalculationLogic {
 
                         for (double phase = 0; phase <= 2 * pi; phase += phaseStep) {
                             iterNumber++;
-                            handler.sendEmptyMessage(iterNumber);
-                            /*if(NormalizeDouble(IterNumber*IterPercent,0)>CurPercent)
-                            {
-                                CurPercent=(int)NormalizeDouble(IterNumber*IterPercent,0);
-                                info="Harmonics calculation progress... " + CurPercent + "%";
-                                ObjectSetText("Info3",info,12,font,DeepSkyBlue);
-                                WindowRedraw();
-                            }*/
+                            if(iterNumber - prevIterNumber >= iterPercent) {
+                                prevIterNumber = iterNumber;
+                                handler.sendEmptyMessage(iterNumber);
+                            }
+
                             nextModeDeviation = 0;
                             deviation = 0;
 
@@ -204,15 +206,6 @@ public class FourierCalculationLogic {
 
                 if (prevDeviation > prevBestDeviation && prevBestDeviation > 0) {
                     for (int harm = harmonic; harm <= numberOfHarmonics; harm++) {
-                        /*Print ("Harmonic = ", Harm, ", ", "PrevDeviation = ", PrevDeviation);*/
-                        /*IterNumber=IterNumber+(int)NormalizeDouble((MaxPeriod-MinPeriod)/PeriodStep,0)*AmplitudeSteps*NormalizeDouble(2*pi/PhaseStep,0);
-                        if(NormalizeDouble(IterNumber*IterPercent,0)>CurPercent)
-                        {
-                            CurPercent=(int)NormalizeDouble(IterNumber*IterPercent,0);
-                            info="Harmonics calculation progress... " + CurPercent + "%";
-                            ObjectSetText("Info3",info,12,font,DeepSkyBlue);
-                            WindowRedraw();
-                        }*/
                         tOpt[mode][harm] = 1;
                         amplitudeOpt[mode][harm] = 0.0;
                         phaseOpt[mode][harm] = 1.0;
@@ -223,11 +216,30 @@ public class FourierCalculationLogic {
             length = minT;
         }
 
+        for (int mode = 1; mode <= numberOfModes; mode++) {
+            for (int harmonic = 1; harmonic <= numberOfHarmonics; harmonic++) {
+                if (amplitudeOpt[mode][harmonic] > 0) {
+                    List<Double[]> harmonicList = new ArrayList<>();
+                    harmonicList.add(new Double[periodOfApproximation]);
+                    harmonicList.add(new Double[predictedBars]);
+                    harmonics.add(harmonicList);
+                }
+            }
+        }
+        System.out.println("harmonics.size() = " + harmonics.size());
+
+        int harmonicNum = 0;
         for (int i = 0; i < periodOfApproximation; i++) {
             y = kOpt * i + bOpt;
+            baseLine[i] = y;
+            harmonicNum = 0;
             for (int mode = 1; mode <= numberOfModes; mode++) {
                 for (int harmonic = 1; harmonic <= numberOfHarmonics; harmonic++) {
                     y = y + amplitudeOpt[mode][harmonic] * Math.sin((2 * pi / tOpt[mode][harmonic]) * i + phaseOpt[mode][harmonic]);
+                    if (amplitudeOpt[mode][harmonic] > 0) {
+                        harmonics.get(harmonicNum).get(0)[i] = kOpt * i + bOpt + amplitudeOpt[mode][harmonic] * Math.sin((2 * pi / tOpt[mode][harmonic]) * i + phaseOpt[mode][harmonic]);
+                        harmonicNum++;
+                    }
                 }
             }
             approximation[i] = y;
@@ -235,16 +247,31 @@ public class FourierCalculationLogic {
 
         for (int i = -predictedBars; i < 0; i++) {
             y = kOpt * i + bOpt;
+            harmonicNum = 0;
             for (int mode = 1; mode <= numberOfModes; mode++) {
                 for (int harmonic = 1; harmonic <= numberOfHarmonics; harmonic++) {
                     y = y + amplitudeOpt[mode][harmonic] * Math.sin((2 * pi / tOpt[mode][harmonic]) * i + phaseOpt[mode][harmonic]);
+                    if (amplitudeOpt[mode][harmonic] > 0) {
+                        harmonics.get(harmonicNum).get(1)[predictedBars + i] = kOpt * i + bOpt + amplitudeOpt[mode][harmonic] * Math.sin((2 * pi / tOpt[mode][harmonic]) * i + phaseOpt[mode][harmonic]);
+                        harmonicNum++;
+                    }
                 }
             }
             prediction[predictedBars + i] = y;
         }
 
-        result.add(approximation);
+        List<Double[]> mainCalc = new ArrayList<>();
+        mainCalc.add(approximation);
+        mainCalc.add(prediction);
+        mainCalc.add(baseLine);
+
+        result.add(mainCalc);
+
+        result.addAll(harmonics);
+
+        /*result.add(approximation);
         result.add(prediction);
+        result.add(baseLine);*/
 
         return result;
     }

@@ -11,49 +11,75 @@
         android:id="@+id/scale_minus_clicked"
         style="@style/chart_scale_style"
         android:layout_marginLeft="40dp"
-        android:text="\u2014"
-        android:background="@drawable/scale_border_clicked"/>
+        android:background="@drawable/scale_border_clicked"
+        android:text="\u2014" />
+
     <TextView
         android:id="@+id/scale_minus"
         style="@style/chart_scale_style"
         android:layout_marginLeft="40dp"
-        android:text="\u2014"
+        android:background="@drawable/scale_border"
         android:clickable="true"
-        android:background="@drawable/scale_border"/>
+        android:text="\u2014" />
+
     <TextView
         android:id="@+id/scale_text"
         style="@style/chart_scale_style"
         android:layout_toRightOf="@id/scale_minus"
-        android:text="scale"/>
+        android:text="scale" />
+
     <TextView
         android:id="@+id/scale_plus_clicked"
         style="@style/chart_scale_style"
         android:layout_toRightOf="@id/scale_text"
-        android:text="+"
-        android:background="@drawable/scale_border_clicked"/>
+        android:background="@drawable/scale_border_clicked"
+        android:text="+" />
+
     <TextView
         android:id="@+id/scale_plus"
         style="@style/chart_scale_style"
         android:layout_toRightOf="@id/scale_text"
-        android:text="+"
+        android:background="@drawable/scale_border"
         android:clickable="true"
-        android:background="@drawable/scale_border"/>
+        android:text="+" />
+
     <Button
         android:id="@+id/btn_calc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="do calculation"
-        android:layout_toRightOf="@id/scale_plus"
         android:layout_marginLeft="30dp"
-        android:onClick="calculate"/>
+        android:layout_toRightOf="@id/scale_plus"
+        android:onClick="calculate"
+        android:text="do calculation" />
+
+    <Spinner
+        android:id="@+id/moreSpinner"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/btn_calc" />
 
     <LinearLayout
-        android:id="@+id/chart_fragment_container"
-        android:layout_below="@id/scale_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        />
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/chart_fragment_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.9"/>
+
+        <RelativeLayout
+            android:id="@+id/chart_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/quotes_loading_indicator"
@@ -61,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true" />
 
     <TextView
         android:id="@+id/progress_percent"
@@ -69,8 +95,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="invisible"
-        android:text="0%"/>
+        android:text="0%"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/quotes_loading_text"
@@ -78,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/quotes_loading_indicator"
-        android:text="@string/loading_text"/>
+        android:text="@string/loading_text" />
 
 
 </RelativeLayout>

@@ -8,9 +8,9 @@ android {
 
     defaultConfig {
         applicationId "com.storozhevykh.forexfourieranalyzer"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 30
-        versionCode 1
+        versionCode defaultMinSdkVersion
         versionName "1.0"
         multiDexEnabled true
 

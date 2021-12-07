@@ -34,6 +34,7 @@ public class ParametersHandler {
 
     private int selectedPairIndex;
     private int selectedTFIndex;
+
     private int maxBarsInHistory;
 
     private final int numberOfModes_DEFAULT_VALUE = 2;
@@ -435,6 +436,14 @@ public class ParametersHandler {
 
     public void setMaxBarsInHistory(int maxBarsInHistory) {
         this.maxBarsInHistory = maxBarsInHistory;
+    }
+
+    public void setSelectedPairIndex(int selectedPairIndex) {
+        this.selectedPairIndex = selectedPairIndex;
+    }
+
+    public void setSelectedTFIndex(int selectedTFIndex) {
+        this.selectedTFIndex = selectedTFIndex;
     }
 
     public int getNumberOfModes() {

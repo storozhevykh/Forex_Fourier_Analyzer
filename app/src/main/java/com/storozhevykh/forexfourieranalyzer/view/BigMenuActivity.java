@@ -1,5 +1,6 @@
 package com.storozhevykh.forexfourieranalyzer.view;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -24,8 +25,9 @@ import android.widget.TextView;
 import com.storozhevykh.forexfourieranalyzer.controller.ParametersHandler;
 import com.storozhevykh.forexfourieranalyzer.R;
 import com.storozhevykh.forexfourieranalyzer.controller.ParametersOwner;
+import com.storozhevykh.forexfourieranalyzer.model.StaticStorage;
 
-public class BigMenuActivity extends FragmentActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, TextWatcher {
+public class BigMenuActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, TextWatcher {
 
     private TextView btn_goToChart;
     private Spinner spinner;
@@ -207,6 +209,7 @@ public class BigMenuActivity extends FragmentActivity implements AdapterView.OnI
                 intent.putExtra("bars", parametersHandler.getMaxBarsInHistory());
                 intent.putExtra("symbol", parametersHandler.getSelectedPairIndex());
                 intent.putExtra("timeframe", parametersHandler.getSelectedTFIndex());
+                StaticStorage.init();
                 startActivity(intent);
             }
 

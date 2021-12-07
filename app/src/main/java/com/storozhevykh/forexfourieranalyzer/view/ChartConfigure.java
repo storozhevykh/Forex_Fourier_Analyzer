@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.storozhevykh.forexfourieranalyzer.R;
 
@@ -27,6 +30,10 @@ public class ChartConfigure extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Spinner pairsSpinner;
+    private Spinner tfSpinner;
+    BigMenuActivity bigMenuActivity;
 
     public ChartConfigure() {
         // Required empty public constructor
@@ -53,6 +60,7 @@ public class ChartConfigure extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bigMenuActivity = (BigMenuActivity) getActivity();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -62,13 +70,38 @@ public class ChartConfigure extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_chart_configure, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chart_configure, container, false);
+        pairsSpinner = view.findViewById(R.id.choose_pair_spinner);
+        ArrayAdapter<String> pairsAdapter = new ArrayAdapter<String>(getActivity(), R.layout.parameters_spinner_item,getResources().getStringArray(R.array.pair_items));
+        pairsSpinner.setAdapter(pairsAdapter);
+        pairsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                bigMenuActivity.getParametersHandler().setSelectedPairIndex(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+        });
+
+        tfSpinner = view.findViewById(R.id.choose_tf_spinner);
+        ArrayAdapter<String> tfAdapter = new ArrayAdapter<String>(getActivity(), R.layout.parameters_spinner_item,getResources().getStringArray(R.array.tf_items));
+        tfSpinner.setAdapter(tfAdapter);
+        tfSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                bigMenuActivity.getParametersHandler().setSelectedTFIndex(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+        });
+
+        return view;
     }
 
     public void onStart() {
         super.onStart();
-        BigMenuActivity bigMenuActivity = (BigMenuActivity) getActivity();
         bigMenuActivity.getParametersHandler().changeChartValuesInEdit();
 
         getActivity().findViewById(R.id.btn_help_bars_in_history).setOnClickListener(bigMenuActivity);

@@ -97,6 +97,13 @@
         <item>NZD/JPY</item>
     </string-array>
 
+    <string-array name="more_spinner_titles">
+        <item>More</item>
+        <item>show main result</item>
+        <item>show base line</item>
+        <item>show harmonics</item>
+    </string-array>
+
     <string name="parameter_bars_in_history">Bars in history</string>
 
     <string name="parameter_number_of_modes">Number of modes</string>

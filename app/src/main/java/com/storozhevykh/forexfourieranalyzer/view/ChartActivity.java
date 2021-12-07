@@ -8,27 +8,37 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.storozhevykh.forexfourieranalyzer.R;
 import com.storozhevykh.forexfourieranalyzer.controller.ActivityRequestInterface;
+import com.storozhevykh.forexfourieranalyzer.controller.MoreSpinnerAdapter;
+import com.storozhevykh.forexfourieranalyzer.controller.MoreSpinnerObject;
 import com.storozhevykh.forexfourieranalyzer.controller.ParametersOwner;
 import com.storozhevykh.forexfourieranalyzer.controller.RecyclerAdapter;
+import com.storozhevykh.forexfourieranalyzer.model.ChartRightDrawable;
 import com.storozhevykh.forexfourieranalyzer.model.FourierCalculationLogic;
+import com.storozhevykh.forexfourieranalyzer.model.StaticStorage;
 import com.storozhevykh.forexfourieranalyzer.quotes.BarItem;
 import com.storozhevykh.forexfourieranalyzer.quotes.Quote;
 import com.storozhevykh.forexfourieranalyzer.retrofit.RetrofitRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ChartActivity extends AppCompatActivity implements ActivityRequestInterface, View.OnClickListener {
@@ -37,14 +47,19 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
     private static List<BarItem> barsList;
     private static List<Double> calcApproximationList;
     private static List<Double> calcPredictionList;
+    private static List<Double> calcBaseLineList;
+    private static List<List<Double>> calcHarmonicsApproximationList = new ArrayList<>();
+    private static List<List<Double>> calcHarmonicsPredictionList = new ArrayList<>();
     private static List<Integer> predictionList;
+    private static List<List<Integer>> harmonicsPredictionList = new ArrayList<>();
     private ChartFragment chartFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Handler handler;
+    private Spinner moreSpinner;
 
-    private double maxHigh;
-    private double minLow;
+    private double maxHigh = 0;
+    private double minLow = 999999;
     private double onePixelPrice;
 
     private int barsInHistory;
@@ -56,10 +71,15 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
 
     public static int chartScale = 2;
 
+    private List<MoreSpinnerObject> spinnerItems = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+
+        Log.d("mylog", "onCreate");
+        System.out.println("onCreate");
 
         barsInHistory = getIntent().getIntExtra("bars", 100);
         symbol = getResources().getStringArray(R.array.pair_request)[getIntent().getIntExtra("symbol", 0)];
@@ -69,6 +89,16 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
         scalePlus = findViewById(R.id.scale_plus);
         scaleMinus.setOnClickListener(this);
         scalePlus.setOnClickListener(this);
+
+        moreSpinner = findViewById(R.id.moreSpinner);
+        List<String> titles = Arrays.asList(getResources().getStringArray(R.array.more_spinner_titles));
+        titles.forEach(title -> {
+            spinnerItems.add(new MoreSpinnerObject(title, false));
+        });
+
+        MoreSpinnerAdapter adapter = new MoreSpinnerAdapter(this, 0,
+                spinnerItems);
+        moreSpinner.setAdapter(adapter);
 
         chartFragment = new ChartFragment();
         fragmentManager = getSupportFragmentManager();
@@ -87,11 +117,28 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
                 //Log.d("calc", "handleMessage: " + msg.what);
             }
         };
-        calcPredictionList = new ArrayList<>();
-        predictionList = new ArrayList<>();
+        calcApproximationList = StaticStorage.calcApproximationList;
+        calcBaseLineList = StaticStorage.calcBaseLineList;
+        calcPredictionList = StaticStorage.calcPredictionList;
+        predictionList = StaticStorage.predictionList;
+        updateFragment();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy");
     }
 
     private void updateFragment() {
+        Log.d("mylog", "updateFragment");
+        System.out.println("updateFragment");
         chartFragment = new ChartFragment();
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -119,16 +166,21 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
 
     public void showQuotes() {
         double onePixelPrice = 0;
+        Log.d("mylog", "showQuotes");
+        System.out.println("showQuotes");
 
         if (quoteList != null) {
 
             onePixelPrice = calculateOnePixelPrice();
             barsList = convertQuotesToBars(onePixelPrice);
+            System.out.println("barsList size = " + barsList.size());
 
             RecyclerAdapter recyclerAdapter = chartFragment.getRecyclerAdapter();
             recyclerAdapter.notifyDataSetChanged();
             findViewById(R.id.quotes_loading_indicator).setVisibility(View.INVISIBLE);
             findViewById(R.id.quotes_loading_text).setVisibility(View.INVISIBLE);
+            drawChartRight();
+            updateBarList();
         }
         else
             Log.d("MyRequest", "Smth went wrong, quoteList is null");
@@ -140,8 +192,6 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
     }
 
     private double calculateOnePixelPrice() {
-        maxHigh = 0;
-        minLow = 999999;
         double chartRange = 0;
         int fragmentHeight = 0;
         onePixelPrice = 0;
@@ -174,23 +224,112 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
             barClose = (int) Math.round((maxHigh - q.getClose()) / onePixelPrice);
             barLow =  barHigh + (int) Math.round((q.getHigh() - q.getLow()) / onePixelPrice);
 
-            bars.add(new BarItem(q.getDatetime(), barOpen, barHigh, barLow, barClose, 0));
+            bars.add(new BarItem(q.getDatetime(), barOpen, barHigh, barLow, barClose, 0, 0, null));
         }
 
         return bars;
     }
 
-    private void updateBarList() {
-        int fourier;
-        //Log.d("calc", "calcResultList.size() = " + calcResultList.size());
-        for (int i = 0; i < calcApproximationList.size(); i++) {
-            fourier = (int) Math.round((maxHigh - calcApproximationList.get(i)) / onePixelPrice);
-            barsList.get(i).setFourier(fourier);
-        }
+    private void drawChartRight () {
+        RelativeLayout chartRight = findViewById(R.id.chart_right);
+        int dashIncrement = (int) (Math.round((maxHigh - minLow) / onePixelPrice)) / 8;
+        double priceIncrement = (maxHigh - minLow) / 8;
+        Drawable chartRightBack = new ChartRightDrawable(chartRight.getHeight(), dashIncrement, 7, maxHigh, priceIncrement);
+        chartRight.setBackground(chartRightBack);
+    }
 
-        for (int i = 0; i < calcPredictionList.size(); i++) {
-            fourier = (int) Math.round((maxHigh - calcPredictionList.get(i)) / onePixelPrice);
-            predictionList.add(fourier);
+    public void updateBarList() {
+        int fourier;
+        int baseLine;
+
+        Log.d("mylog", "updateBarList");
+        System.out.println("updateBarList");
+
+        /*if (calcPredictionList != null && !calcPredictionList.isEmpty()) {
+            if (Collections.max(calcPredictionList) > maxHigh || Collections.min(calcPredictionList) < minLow) {
+                if (Collections.max(calcPredictionList) > maxHigh)
+                    maxHigh = Collections.max(calcPredictionList);
+                if (Collections.min(calcPredictionList) < minLow)
+                    minLow = Collections.min(calcPredictionList);
+                showQuotes();
+            }
+        }*/
+
+        if (calcApproximationList != null && calcPredictionList != null && !barsList.isEmpty()) {
+
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+
+                    for (int i = 0; i < calcApproximationList.size(); i++) {
+
+                        if (spinnerItems.get(1).isSelected() && barsList.get(i).getFourier() == 0) {
+                            int fourier = (int) Math.round((maxHigh - calcApproximationList.get(i)) / onePixelPrice);
+                            barsList.get(i).setFourier(fourier);
+                        } else if (!spinnerItems.get(1).isSelected() && barsList.get(i).getFourier() != 0)
+                            barsList.get(i).setFourier(0);
+
+                        if (spinnerItems.get(2).isSelected() && barsList.get(i).getBaseLine() == 0) {
+                            int baseLine = (int) Math.round((maxHigh - calcBaseLineList.get(i)) / onePixelPrice);
+                            barsList.get(i).setBaseLine(baseLine);
+                        } else if (!spinnerItems.get(2).isSelected() && barsList.get(i).getBaseLine() != 0)
+                            barsList.get(i).setBaseLine(0);
+                    }
+
+                    if (spinnerItems.get(1).isSelected() && predictionList.isEmpty()) {
+                        for (int i = 0; i < calcPredictionList.size(); i++) {
+                            int fourier = (int) Math.round((maxHigh - calcPredictionList.get(i)) / onePixelPrice);
+                            predictionList.add(fourier);
+                        }
+                        StaticStorage.predictionList = predictionList;
+                    }
+                    else if (!spinnerItems.get(1).isSelected() && !predictionList.isEmpty()) {
+                        predictionList.clear();
+                        StaticStorage.predictionList = predictionList;
+                    }
+
+                    if (calcHarmonicsApproximationList != null && calcHarmonicsPredictionList != null) {
+                        if (spinnerItems.get(3).isSelected() && barsList.get(0).getHarmonics() == null) {
+
+                            harmonicsPredictionList.clear();
+
+                            for (int harmonic = 0; harmonic < calcHarmonicsApproximationList.size(); harmonic++) {
+                                List<Double> curHarmonicArr = calcHarmonicsApproximationList.get(harmonic);
+
+                                for (int i = 0; i < curHarmonicArr.size(); i++) {
+                                    int fourier = (int) Math.round((maxHigh - curHarmonicArr.get(i)) / onePixelPrice);
+                                    if (barsList.get(i).getHarmonics() == null)
+                                        barsList.get(i).setHarmonics(new ArrayList<>());
+                                    barsList.get(i).getHarmonics().add(fourier);
+                                }
+
+                                curHarmonicArr = calcHarmonicsPredictionList.get(harmonic);
+                                harmonicsPredictionList.add(new ArrayList<>());
+
+                                for (int i = 0; i < curHarmonicArr.size(); i++) {
+                                    int fourier = (int) Math.round((maxHigh - curHarmonicArr.get(i)) / onePixelPrice);
+                                    harmonicsPredictionList.get(harmonic).add(fourier);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!spinnerItems.get(3).isSelected() && barsList.get(0).getHarmonics() != null && calcApproximationList != null) {
+                        for (int i = 0; i < calcApproximationList.size(); i++) {
+                            barsList.get(i).setHarmonics(null);
+                        }
+                    }
+
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void unused) {
+                    chartFragment.getRecyclerAdapter().notifyDataSetChanged();
+                    System.out.println(chartFragment.getRecyclerAdapter());
+                }
+            }.execute();
         }
 
     }
@@ -216,7 +355,7 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
                 break;
 
             case R.id.scale_plus:
-                if (chartScale < 8) {
+                if (chartScale < 5) {
                     chartScale++;
                     scalePlus.startAnimation(animation);
                     updateFragment();
@@ -227,7 +366,7 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
             scaleMinus.setTextColor(getResources().getColor(R.color.disabled));
         else
             scaleMinus.setTextColor(getResources().getColor(R.color.black));
-        if (chartScale >= 8)
+        if (chartScale >= 5)
             scalePlus.setTextColor(getResources().getColor(R.color.disabled));
         else
             scalePlus.setTextColor(getResources().getColor(R.color.black));
@@ -244,6 +383,13 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
 
     public void calculate(View view) {
 
+        Log.d("mylog", "calculate");
+        System.out.println("calculate");
+        /*Log.d("MyLog", "spinnerItems size: " + spinnerItems.size());
+        spinnerItems.forEach(item -> Log.d("MyLog", item.getTitle() + ": " + item.isSelected()));*/
+        /*System.out.println("spinnerItems size: " + spinnerItems.size());
+        spinnerItems.forEach(item -> System.out.println(item.getTitle() + ": " + item.isSelected()));*/
+
         FourierCalculationLogic calculationObject = new FourierCalculationLogic(quoteList, handler);
         int iterations = calculationObject.getIterations();
 
@@ -256,10 +402,10 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
         Log.d("calc", "progressBar.getMax() = " + progressBar.getMax());
         Log.d("calc", "progressBar.getProgress() = " + progressBar.getProgress());
 
-        new AsyncTask<Void, Integer, List<Double[]>>() {
+        new AsyncTask<Void, Integer, List<List<Double[]>>>() {
 
             @Override
-            protected List<Double[]> doInBackground(Void... voids) {
+            protected List<List<Double[]>> doInBackground(Void... voids) {
                 Log.d("calc", "Calculation started");
                 //FourierCalculationLogic calculationObject = new FourierCalculationLogic(lists[0], handler);
                 return calculationObject.calculate(maxHigh, minLow);
@@ -271,14 +417,22 @@ public class ChartActivity extends AppCompatActivity implements ActivityRequestI
             }
 
             @Override
-            protected void onPostExecute(List<Double[]> doubles) {
+            protected void onPostExecute(List<List<Double[]>> doubles) {
                 Log.d("calc", "Calculation finished");
-                calcApproximationList = Arrays.asList(doubles.get(0).clone());
-                calcPredictionList = Arrays.asList(doubles.get(1).clone());
+                calcApproximationList = Arrays.asList(doubles.get(0).get(0).clone());
+                calcPredictionList = Arrays.asList(doubles.get(0).get(1).clone());
+                calcBaseLineList = Arrays.asList(doubles.get(0).get(2).clone());
+                for (int i = 1; i < doubles.size(); i++) {
+                    calcHarmonicsApproximationList.add(Arrays.asList(doubles.get(i).get(0).clone()));
+                    calcHarmonicsPredictionList.add(Arrays.asList(doubles.get(i).get(1).clone()));
+                }
                 updateBarList();
                 progressBar.setVisibility(View.INVISIBLE);
                 percent.setVisibility(View.INVISIBLE);
-                chartFragment.getRecyclerAdapter().notifyDataSetChanged();
+
+                StaticStorage.calcApproximationList = calcApproximationList;
+                StaticStorage.calcBaseLineList = calcBaseLineList;
+                StaticStorage.calcPredictionList = calcPredictionList;
             }
         }.execute();
         /*FourierCalculationLogic calculationObject = new FourierCalculationLogic(quoteList);

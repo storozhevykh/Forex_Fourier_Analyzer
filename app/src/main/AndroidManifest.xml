@@ -13,10 +13,14 @@
         android:supportsRtl="true"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:theme="@style/Theme.ForexFourierAnalyzer">
-        <activity android:name=".view.ChartActivity"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".view.BigMenuActivity" />
-        <activity android:name=".view.MainActivity">
+        <activity
+            android:name=".view.ChartActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.BigMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

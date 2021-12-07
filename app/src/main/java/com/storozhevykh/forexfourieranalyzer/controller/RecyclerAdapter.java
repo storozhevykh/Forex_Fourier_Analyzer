@@ -30,6 +30,9 @@ import com.storozhevykh.forexfourieranalyzer.view.ChartActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private int barsPerHolder;
@@ -59,12 +62,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+        List<Integer> emptyList = new ArrayList<>();
         if(position >= predictedBars) {
+            BarItem nextBarItem;
             BarItem barItem = ChartActivity.getBarsList().get(position - predictedBars);
-            holder.bind(barItem.getDatetime(), String.valueOf(barItem.getHigh()), barItem.getHigh(), barItem.getLow(), barItem.getOpen() < barItem.getClose(), scale, barItem.getFourier());
+            if (position - predictedBars + 1 >= 0 && position - predictedBars + 1 < ChartActivity.getBarsList().size())
+                nextBarItem = ChartActivity.getBarsList().get(position - predictedBars + 1);
+            else
+                nextBarItem = barItem;
+            holder.bind(barItem.getDatetime(), String.valueOf(barItem.getHigh()), barItem.getHigh(), barItem.getLow(), barItem.getOpen() < barItem.getClose(), scale,
+                    barItem.getFourier(), nextBarItem.getFourier(), barItem.getBaseLine(), nextBarItem.getBaseLine(), barItem.getHarmonics(), nextBarItem.getHarmonics());
         }
-        else if (ChartActivity.getPredictionList().size() > 0)
-            holder.bind(scale, ChartActivity.getPredictionList().get(position));
+        else if (ChartActivity.getPredictionList().size() > 0) {
+            if (position + 1 < ChartActivity.getPredictionList().size())
+                holder.bind(scale, ChartActivity.getPredictionList().get(position), ChartActivity.getPredictionList().get(position + 1), emptyList, emptyList);
+            else
+                holder.bind(scale, ChartActivity.getPredictionList().get(position), ChartActivity.getPredictionList().get(position), emptyList, emptyList);
+        }
         else
             holder.bind(scale);
     }
@@ -84,18 +98,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemView.invalidate();
         }
 
-        void bind(String date, String close, int high, int low, boolean fill, int scale, int fourier) {
+        void bind(String date, String close, int high, int low, boolean fill, int scale, int fourier, int nextFourier,
+                  int baseLine, int nextBaseLine, List<Integer> harmonics, List<Integer> nextHarmonics) {
             android.view.ViewGroup.LayoutParams layoutParams = bar.getLayoutParams();
             layoutParams.height = parent.getHeight();
             layoutParams.width = (int) Math.round(Math.pow(2, scale + 2));
-            bar.setBackground(new BarDrawable((int) Math.round(Math.pow(2, scale + 1)), high, (int) Math.round(Math.pow(2, scale + 2)), low, fill, fourier, layoutParams.width));
+            bar.setBackground(new BarDrawable((int) Math.round(Math.pow(2, scale + 1)), high, (int) Math.round(Math.pow(2, scale + 2)), low, fill,
+                    fourier, nextFourier, baseLine, nextBaseLine, layoutParams.width, harmonics, nextHarmonics));
             bar.invalidate();
         }
-        void bind(int scale, int fourier) {
+        void bind(int scale, int fourier, int nextFourier, List<Integer> harmonics, List<Integer> nextHarmonics) {
             android.view.ViewGroup.LayoutParams layoutParams = bar.getLayoutParams();
             layoutParams.height = parent.getHeight();
             layoutParams.width = (int) Math.round(Math.pow(2, scale + 2));
-            bar.setBackground(new BarDrawable((int) Math.round(Math.pow(2, scale + 1)), 0, (int) Math.round(Math.pow(2, scale + 2)), 0, false, fourier, layoutParams.width));
+            bar.setBackground(new BarDrawable((int) Math.round(Math.pow(2, scale + 1)), 0, (int) Math.round(Math.pow(2, scale + 2)), 0, false,
+                    fourier, nextFourier ,0, 0, layoutParams.width, harmonics, nextHarmonics));
             bar.invalidate();
         }
         void bind(int scale) {

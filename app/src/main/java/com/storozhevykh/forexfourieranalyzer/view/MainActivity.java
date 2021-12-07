@@ -46,25 +46,25 @@ public class MainActivity extends AppCompatActivity {
         //layout.addView(new FourierLines(this, 100, 700));
         double pi = Math.PI;
         drawPoints(80, Color.RED, 3000, pi / 2);
-        drawPoints(40, Color.BLUE, 3000 + 90 * 10, pi);
-        drawPoints(60, Color.GREEN, 3000 + 90 * 10 * 2, 3 * pi / 2);
+        drawPoints(40, Color.BLUE, 3000 + 180 * 5, pi);
+        drawPoints(60, Color.GREEN, 3000 + 180 * 5 * 2, 3 * pi / 2);
     }
 
     private void drawPoints(int amplitude, int color, int timeOffset, double phase) {
         int y;
         double omega = 0.01;
-        TextView[] textPoints = new TextView[90];
+        TextView[] textPoints = new TextView[180];
         for (int i = 0; i < textPoints.length; i++) {
             textPoints[i] = new TextView(getApplicationContext());
             textPoints[i].setText(".");
             textPoints[i].setTextSize(40);
             textPoints[i].setTextColor(color);
-            y = (int) Math.round(800 + amplitude * Math.sin(omega * (100 + i * 10) + phase));
-            textPoints[i].setX(100 + i * 10);
+            y = (int) Math.round(800 + amplitude * Math.sin(omega * (100 + i * 5) + phase));
+            textPoints[i].setX(100 + i * 5);
             textPoints[i].setY(y);
             layout.addView(textPoints[i]);
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
-            animation.setStartOffset(timeOffset + i * 10);
+            animation.setStartOffset(timeOffset + i * 5);
             textPoints[i].startAnimation(animation);
         }
     }
